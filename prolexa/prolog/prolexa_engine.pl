@@ -110,6 +110,18 @@ prove_rb((A,B), Rulebase, P0, P):-!,
 prove_rb(Q,RB):-
 	prove_rb(Q,RB,[],_P).
 
+% resolving conflicts with negation
+resolve_conflicts([H:-B]):-
+	(retract_check([H:-B]))
+	; retractall(prolexa:stored_rule(_,[(not(H):-B)])),
+	  retractall(prolexa:stored_rule(_,[(H:-not(B))])).
+
+retract_check(not(H):-B):-
+	retractall(prolexa:stored_rule(_,[(H:-B)])).
+
+retract_check(H:-not(B)):-
+	retractall(prolexa:stored_rule(_,[(H:-B)])).
+
 
 %%% Utilities from nl_shell.pl %%%
 
