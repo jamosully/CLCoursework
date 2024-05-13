@@ -31,6 +31,9 @@ pred(sparrow, 1,[n/sparrow]).
 pred(fly,     1,[v/fly]).
 pred(teacher, 1,[n/teacher]).
 pred(happy,   1,[a/happy]).
+pred(playful, 1,[a/playful]).
+pred(energetic,1,[a/energetic]).
+pred(animal,  1,[n/animal]).
 
 pred2gr(P,1,C/W,X=>Lit):-
 	pred(P,1,L),
@@ -68,6 +71,10 @@ sentence1([(not(L):-true)]) --> proper_noun(N,X),verb_phrase(N,not(X=>L)).
 sentence1(C) --> determiner(N,M1,M2,M3,C),noun(N,M1),verb_phrase(N,M2),[except],noun(N,M3).
 sentence1(C) --> determiner(N,M1,M2,M3,C),noun(N,M1),verb_phrase(N,M2),[except],proper_noun(N,M3).
 
+% sentence extensions for existential quantification
+sentence1([([H1,H2]:-true)]) --> determiner(N,M1,M2,[(H1:-true),(H2:-true)]),noun(N,M1),verb_phrase(N,M2).
+
+
 verb_phrase(s,M) --> [is],property(s,M).
 verb_phrase(p,M) --> [are],property(p,M).
 
@@ -96,6 +103,7 @@ determiner(p,X=>B,X=>H,X=>E,[(H:-B,not(E))]) --> [most].
 % existential quantification using skolem constants 
 determiner(p, sk=>H1, sk=>H2, [(H1:-true),(H2 :- true)]) -->[some].
 determiner(p, sk=>H1, sk=>H2, [(H2:-true),(H1:-true)]) -->[some].
+determiner(p,X=>B,X=>H,[(default(H:-B))]) --> [most].
 
 
 proper_noun(s,tweety) --> [tweety].
