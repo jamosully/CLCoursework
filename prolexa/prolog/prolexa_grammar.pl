@@ -65,8 +65,8 @@ sentence1([(H:-not(B))]) --> determiner(N,M1,M2,[(H:-B)]),noun(N,M1),verb_phrase
 sentence1([(not(L):-true)]) --> proper_noun(N,X),verb_phrase(N,not(X=>L)).
 
 % sentence extensions for default rules
-sentence1(C) --> determiner(N,M1,M2,C),noun(N,M1),verb_phrase(N,M2),[except],noun(N,M3).
-sentence1(C) --> determiner(N,M1,M2,C),noun(N,M1),verb_phrase(N,M2),[except],proper_noun(N,M3).
+sentence1(C) --> determiner(N,M1,M2,M3,C),noun(N,M1),verb_phrase(N,M2),[except],noun(N,M3).
+sentence1(C) --> determiner(N,M1,M2,M3,C),noun(N,M1),verb_phrase(N,M2),[except],proper_noun(N,M3).
 
 verb_phrase(s,M) --> [is],property(s,M).
 verb_phrase(p,M) --> [are],property(p,M).
@@ -91,7 +91,8 @@ property(p,M) --> noun(p,M).
 determiner(s,X=>B,X=>H,[(H:-B)]) --> [every].
 determiner(p,X=>B,X=>H,[(H:-B)]) --> [all].
 %determiner(p,X=>B,X=>H,[(H:-B)]) --> [].
-%determiner(p, sk=>H1, sk=>H2, [(H1:-true),(H2 :- true)]) -->[some].
+%determiner(p,sk=>H1,sk=>H2,,sk=>H3,[(H1:-true),(H2 :- true)]) -->[some].
+determiner(p,X=>B,X=>H,X=>E,[(H:-B,not(E))]) --> [most].
 
 proper_noun(s,tweety) --> [tweety].
 proper_noun(s,peter) --> [peter].
