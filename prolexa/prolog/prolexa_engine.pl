@@ -101,6 +101,11 @@ prove_rb(not(A),Rulebase,P0,P):-
     prove_rb(A,Rulebase,P0,P), !, fail.
 prove_rb(not(_A),_Rulebase,P,P):-!.
 
+% argument for existential quantification (simply logical chapter 7.3)
+prove_rb((A,B), Rulebase, P0, P):-!,
+	prove_rb(A, Rulebase, P0, P1),
+	prove_rb(B, Rulebase, P1, P).
+
 % top-level version that ignores proof
 prove_rb(Q,RB):-
 	prove_rb(Q,RB,[],_P).
@@ -112,6 +117,15 @@ find_clause(Clause,Rule,[Rule|_Rules]):-
 	copy_term(Rule,[Clause]).	% do not instantiate Rule
 find_clause(Clause,Rule,[_Rule|Rules]):-
 	find_clause(Clause,Rule,Rules).
+
+% helper for below
+copy_element(X,Ys):-
+	element(X1,Ys),
+	copy_term(X1,X).
+
+% find_clause predicate added for existential quantification (simply logical chapter 7.3)
+find_clause(Clause,Rule,[Rule|_Rules]):-
+	copy_element(Clause,Rule).
 
 % transform instantiated, possibly conjunctive, query to list of clauses
 transform((A,B),[(A:-true)|Rest]):-!,

@@ -91,8 +91,10 @@ property(p,M) --> noun(p,M).
 determiner(s,X=>B,X=>H,[(H:-B)]) --> [every].
 determiner(p,X=>B,X=>H,[(H:-B)]) --> [all].
 %determiner(p,X=>B,X=>H,[(H:-B)]) --> [].
-%determiner(p,sk=>H1,sk=>H2,,sk=>H3,[(H1:-true),(H2 :- true)]) -->[some].
 determiner(p,X=>B,X=>H,X=>E,[(H:-B,not(E))]) --> [most].
+
+% existential quantification using skolem constants 
+determiner(p, sk=>H1, sk=>H2, [(H1:-true),(H2:-true)]) -->[some].
 
 proper_noun(s,tweety) --> [tweety].
 proper_noun(s,peter) --> [peter].
@@ -115,10 +117,9 @@ question1(Q) --> [does],proper_noun(_,X),verb_phrase(_,X=>Q).
 question1(not(Q)) --> [is],proper_noun(N,X),[not],property(N,not(X=>Q)).
 question1(not(Q)) --> [does],proper_noun(_,X),[not],verb_phrase(_,not(X=>Q)).
 
-
-%question1((Q1,Q2)) --> [are,some],noun(p,sk=>Q1),
-%					  property(p,sk=>Q2).
-
+% question extensions with skolem constants
+question1((Q1,Q2)) --> [do],[some],noun(p,sk=>Q1),verb_phrase(p,sk=>Q2).
+question1((Q1,Q2)) --> [are],[some],noun(p,sk=>Q1),property(p,sk=>Q2).
 
 %%% commands %%%
 
@@ -136,6 +137,8 @@ command(g(retractall(prolexa:stored_rule(_,_)),"I am a blank slate")) --> forget
 command(g(all_rules(Answer),Answer)) --> kbdump. 
 command(g(all_answers(PN,Answer),Answer)) --> tellmeabout,proper_noun(s,PN).
 command(g(explain_question(Q,_,Answer),Answer)) --> [explain,why],sentence1([(Q:-true)]).
+% explain Q for existential quantification
+command(g(explain_question([Q1,Q2],_,Answer),Answer)) --> [explain],[why],sentence1([(Q1:-true),(Q2:-true)]).
 command(g(random_fact(Fact),Fact)) --> getanewfact.
 %command(g(pf(A),A)) --> peterflach. 
 %command(g(iai(A),A)) --> what. 

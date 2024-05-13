@@ -26,6 +26,10 @@ stored_rule(1,[(human(peter):-true)]).
 stored_rule(1,[(teacher(X):-happy(X))]).
 stored_rule(1,[(bird(X):-penguin(X))]).
 
+% stored rules for existential quantification
+stored_rule(1, [(animal(X):-true), (playful(X):-true)]).
+stored_rule(1, [(energetic(X):-playful(X))]).
+stored_rule(1, [(playful(barkley):-true)]).
 
 %%% Prolexa Command Line Interface %%%
 
