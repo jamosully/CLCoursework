@@ -101,8 +101,7 @@ prove_rb(not(A),Rulebase,P0,P):-
     prove_rb(A,Rulebase,P0,P), !, fail.
 prove_rb(not(_A),_Rulebase,P,P):-!.
 
-% argument for existential quantification (simply logical chapter 7.3)
-prove_rb((A,B), Rulebase, P0, P):-!,
+% argument for existential quantification
 	prove_rb(A, Rulebase, P0, P1),
 	prove_rb(B, Rulebase, P1, P).
 

@@ -72,8 +72,7 @@ sentence1(C) --> determiner(N,M1,M2,M3,C),noun(N,M1),verb_phrase(N,M2),[except],
 sentence1(C) --> determiner(N,M1,M2,M3,C),noun(N,M1),verb_phrase(N,M2),[except],proper_noun(N,M3).
 
 % sentence extensions for existential quantification
-sentence1([([H1,H2]:-true)]) --> determiner(N,M1,M2,[(H1:-true),(H2:-true)]),noun(N,M1),verb_phrase(N,M2).
-
+sentence1([([L1,L2]:-true)]) --> determiner(N,M1,M2,[(L1:-true),(L2:-true)]),noun(N,M1),verb_phrase(N,M2).
 
 verb_phrase(s,M) --> [is],property(s,M).
 verb_phrase(p,M) --> [are],property(p,M).
