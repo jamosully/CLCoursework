@@ -118,10 +118,10 @@ find_clause(Clause,Rule,[Rule|_Rules]):-
 find_clause(Clause,Rule,[_Rule|Rules]):-
 	find_clause(Clause,Rule,Rules).
 
-% helper for below
-copy_element(X,Ys):-
-	element(X1,Ys),
-	copy_term(X1,X).
+% % helper for below
+% copy_element(X,Ys):-
+% 	element(X1,Ys),
+% 	copy_term(X1,X).
 
 % find_clause predicate added for existential quantification (simply logical chapter 7.3)
 find_clause(Clause,Rule,[Rule|_Rules]):-

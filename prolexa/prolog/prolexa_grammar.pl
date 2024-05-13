@@ -75,7 +75,7 @@ verb_phrase(p,M) --> [are],property(p,M).
 verb_phrase(s,not(M)) --> [is,not],property(s,M).
 verb_phrase(p,not(M)) --> [are,not],property(p,M).
 verb_phrase(s,not(M)) --> [does,not],property(s,M)
-									;iverb(p,M).
+						 ;[does,not],iverb(p,M).
 verb_phrase(p,not(M)) --> [not],property(p,M).
 
 % verb phrase extensions for default rules
@@ -90,11 +90,13 @@ property(p,M) --> noun(p,M).
 
 determiner(s,X=>B,X=>H,[(H:-B)]) --> [every].
 determiner(p,X=>B,X=>H,[(H:-B)]) --> [all].
-%determiner(p,X=>B,X=>H,[(H:-B)]) --> [].
+determiner(p,X=>B,X=>H,[(H:-B)]) --> [].
 determiner(p,X=>B,X=>H,X=>E,[(H:-B,not(E))]) --> [most].
 
 % existential quantification using skolem constants 
-determiner(p, sk=>H1, sk=>H2, [(H1:-true),(H2:-true)]) -->[some].
+determiner(p, sk=>H1, sk=>H2, [(H1:-true),(H2 :- true)]) -->[some].
+determiner(p, sk=>H1, sk=>H2, [(H2:-true),(H1:-true)]) -->[some].
+
 
 proper_noun(s,tweety) --> [tweety].
 proper_noun(s,peter) --> [peter].
