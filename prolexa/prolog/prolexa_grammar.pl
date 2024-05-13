@@ -5,6 +5,7 @@ utterance(C) --> question(C).
 utterance(C) --> command(C).
 
 :- op(600, xfy, '=>').
+:- op(900, fy, not).
 
 
 %%% lexicon, driven by predicates %%%
@@ -28,6 +29,8 @@ pred(bird,    1,[n/bird]).
 pred(penguin, 1,[n/penguin]).
 pred(sparrow, 1,[n/sparrow]).
 pred(fly,     1,[v/fly]).
+pred(teacher, 1,[n/teacher]).
+pred(happy,   1,[a/happy]).
 
 pred2gr(P,1,C/W,X=>Lit):-
 	pred(P,1,L),
@@ -57,8 +60,28 @@ sword --> [that].
 sentence1(C) --> determiner(N,M1,M2,C),noun(N,M1),verb_phrase(N,M2).
 sentence1([(L:-true)]) --> proper_noun(N,X),verb_phrase(N,X=>L).
 
+% sentence extensions for negation
+sentence1([(H:-not(B))]) --> determiner(N,M1,M2,[(H:-B)]),noun(N,M1),verb_phrase(N,not(M2)).
+sentence1([(not(L):-true)]) --> proper_noun(N,X),verb_phrase(N,not(X=>L)).
+
+% sentence extensions for default rules
+sentence1(C) --> determiner(N,M1,M2,C),noun(N,M1),verb_phrase(N,M2),[except],noun(N,M3).
+sentence1(C) --> determiner(N,M1,M2,C),noun(N,M1),verb_phrase(N,M2),[except],proper_noun(N,M3).
+
 verb_phrase(s,M) --> [is],property(s,M).
 verb_phrase(p,M) --> [are],property(p,M).
+
+% verb phrase extensions for negation
+verb_phrase(s,not(M)) --> [is,not],property(s,M).
+verb_phrase(p,not(M)) --> [are,not],property(p,M).
+verb_phrase(s,not(M)) --> [does,not],property(s,M)
+									;iverb(p,M).
+verb_phrase(p,not(M)) --> [not],property(p,M).
+
+% verb phrase extensions for default rules
+% verb_phrase(s,not(M)) --> [does,not],iverb(p,M),
+% verb_phrase(p,not(M)) --> [do,not],iverb(p,M),
+
 verb_phrase(N,M) --> iverb(N,M).
 
 property(N,M) --> adjective(N,M).
@@ -72,6 +95,7 @@ determiner(p,X=>B,X=>H,[(H:-B)]) --> [all].
 
 proper_noun(s,tweety) --> [tweety].
 proper_noun(s,peter) --> [peter].
+proper_noun(s,donald) --> [donald].
 
 
 %%% questions %%%
@@ -83,8 +107,14 @@ qword --> [].
 %qword --> [whether]. 
 
 question1(Q) --> [who],verb_phrase(s,_X=>Q).
-question1(Q) --> [is], proper_noun(N,X),property(N,X=>Q).
+question1(Q) --> [is],proper_noun(N,X),property(N,X=>Q).
 question1(Q) --> [does],proper_noun(_,X),verb_phrase(_,X=>Q).
+
+% question extensions for negation
+question1(not(Q)) --> [is],proper_noun(N,X),[not],property(N,not(X=>Q)).
+question1(not(Q)) --> [does],proper_noun(_,X),[not],verb_phrase(_,not(X=>Q)).
+
+
 %question1((Q1,Q2)) --> [are,some],noun(p,sk=>Q1),
 %					  property(p,sk=>Q2).
 

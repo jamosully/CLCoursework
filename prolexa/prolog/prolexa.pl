@@ -17,10 +17,13 @@
 
 :-prompt(_Old,'prolexa> ').
 
+:- op(900, fy, not).
+
 
 %some intial stored rules
 stored_rule(1,[(mortal(X):-human(X))]).
 stored_rule(1,[(human(peter):-true)]).
+stored_rule(1,[(teacher(X):-happy(X))]).
 
 
 %%% Prolexa Command Line Interface %%%
