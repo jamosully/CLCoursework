@@ -89,6 +89,7 @@ verb_phrase(p,not(M)) --> [not],property(p,M).
 % verb_phrase(p,not(M)) --> [do,not],iverb(p,M),
 
 verb_phrase(N,M) --> iverb(N,M).
+verb_phrase(N,M) --> iverb(N,M),[prizes].
 
 property(N,M) --> adjective(N,M).
 property(s,M) --> [a],noun(s,M).
