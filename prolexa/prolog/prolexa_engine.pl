@@ -34,6 +34,10 @@ prove_question(Query,Answer):-
 		transform(not(Query),Clauses),
 		phrase(sentence(Clauses),AnswerAtomList),
 		atomics_to_string(AnswerAtomList," ",Answer)
+	; prove_rb([Q0,Q],Rulebase) ->
+		transform([Q0,Q],Clauses),
+		phrase(sentence(Clauses),AnswerAtomList),
+		atomics_to_string(AnswerAtomList," ",Answer)
 	; Answer = ""
 	).	
 
@@ -50,6 +54,12 @@ explain_question(Query,SessionId,Answer):-
 	; prove_rb(not(Query),Rulebase,[],Proof) ->
 		maplist(pstep2message,Proof,Msg),
 		phrase(sentence1([(not(Query):-true)]),L),
+		atomic_list_concat([therefore|L]," ",Last),
+		append(Msg,[Last],Messages),
+		atomic_list_concat(Messages,"; ",Answer)
+	; prove_rb([Q0,Q],Rulebase,[],Proof) ->
+		maplist(pstep2message,Proof,Msg),
+		phrase(sentence1([([Q0,Q]:-true)]),L),
 		atomic_list_concat([therefore|L]," ",Last),
 		append(Msg,[Last],Messages),
 		atomic_list_concat(Messages,"; ",Answer)
@@ -102,8 +112,9 @@ prove_rb(not(A),Rulebase,P0,P):-
 prove_rb(not(_A),_Rulebase,P,P):-!.
 
 % argument for existential quantification
-	prove_rb(A, Rulebase, P0, P1),
-	prove_rb(B, Rulebase, P1, P).
+prove_rb((A,B), Rulebase, P0, P):-!,
+    prove_rb(A, Rulebase, P0, P1),
+    prove_rb(B, Rulebase, P1, P).
 
 % top-level version that ignores proof
 prove_rb(Q,RB):-

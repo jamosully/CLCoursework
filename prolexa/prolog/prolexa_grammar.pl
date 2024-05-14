@@ -102,7 +102,7 @@ determiner(p,X=>B,X=>H,X=>E,[(H:-B,not(E))]) --> [most].
 % existential quantification using skolem constants 
 determiner(p, sk=>H1, sk=>H2, [(H1:-true),(H2 :- true)]) -->[some].
 determiner(p, sk=>H1, sk=>H2, [(H2:-true),(H1:-true)]) -->[some].
-determiner(p,X=>B,X=>H,[(default(H:-B))]) --> [most].
+% determiner(p,X=>B,X=>H,[(default(H:-B))]) --> [most].
 
 
 proper_noun(s,tweety) --> [tweety].
