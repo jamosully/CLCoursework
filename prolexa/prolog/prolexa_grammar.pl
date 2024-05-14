@@ -19,6 +19,7 @@ iverb(p,M)			--> [Verb],   {pred2gr(_P,1,v/Verb,M)}.
 % unary predicates for adjectives, nouns and verbs
 pred(human,   1,[a/human,n/human]).
 pred(mortal,  1,[a/mortal,n/mortal]).
+pred(genius,  1,[a/genius,n/genius]).
 %pred(man,     1,[a/male,n/man]).
 %pred(woman,   1,[a/female,n/woman]).
 %pred(married, 1,[a/married]).
@@ -29,6 +30,7 @@ pred(bird,    1,[n/bird]).
 pred(penguin, 1,[n/penguin]).
 pred(sparrow, 1,[n/sparrow]).
 pred(fly,     1,[v/fly]).
+pred(win,     1,[v/win]).
 pred(teacher, 1,[n/teacher]).
 pred(happy,   1,[a/happy]).
 pred(playful, 1,[a/playful]).
@@ -43,6 +45,8 @@ pred2gr(P,1,C/W,X=>Lit):-
 noun_s2p(Noun_s,Noun_p):-
 	( Noun_s=woman -> Noun_p=women
 	; Noun_s=man -> Noun_p=men
+	; Noun_s=genius -> Noun_p=geniuses
+	; Noun_s=animal -> Noun_p=animals
 	; atom_concat(Noun_s,s,Noun_p)
 	).
 
@@ -85,8 +89,8 @@ verb_phrase(s,not(M)) --> [does,not],property(s,M)
 verb_phrase(p,not(M)) --> [not],property(p,M).
 
 % verb phrase extensions for default rules
-% verb_phrase(s,not(M)) --> [does,not],iverb(p,M),
-% verb_phrase(p,not(M)) --> [do,not],iverb(p,M),
+verb_phrase(s,not(M)) --> [does,not],iverb(p,M),
+verb_phrase(p,not(M)) --> [do,not],iverb(p,M),
 
 verb_phrase(N,M) --> iverb(N,M).
 verb_phrase(N,M) --> iverb(N,M),[prizes].
@@ -129,7 +133,7 @@ question1(not(Q)) --> [does],proper_noun(_,X),[not],verb_phrase(_,not(X=>Q)).
 
 % question extensions with skolem constants
 question1((Q1,Q2)) --> [do],[some],noun(p,sk=>Q1),verb_phrase(p,sk=>Q2).
-question1((Q1,Q2)) --> [are],[some],noun(p,sk=>Q1),property(p,sk=>Q2).
+question1((Q1,Q2)) --> [are],[some],noun(p,sk=>Q1),property(a,sk=>Q2).
 
 %%% commands %%%
 
